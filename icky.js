@@ -113,7 +113,7 @@ TerminalShell.commands['last'] = function(terminal) {
 TerminalShell.commands['arandom'] = 
 TerminalShell.commands['urandom'] = 
 TerminalShell.commands['random'] = function(terminal) {
-	terminal.print('Thats not random...');
+	terminal.print('That\'s not random...');
 	xkcdDisplay(terminal, getRandomInt(1, xkcd.latest.num));
 };
 
@@ -165,6 +165,10 @@ TerminalShell.commands['shutdown'] = TerminalShell.commands['poweroff'] = functi
 	} else {
 		terminal.print('Must be root.');
 	}
+};
+
+TerminalShell.commands['bye'] = function(terminal) {
+	terminal.print('do you think this is ftp?');
 };
 
 TerminalShell.commands['logout'] =
@@ -221,7 +225,10 @@ Filesystem = {
 		});
 	}}
 };
-Filesystem['blog'] = Filesystem['blag'] = Filesystem['incite'] = linkFile('http://www.schoolio.co.uk/diary/');
+Filesystem['blog'] = 
+Filesystem['blag'] = 
+Filesystem['incite'] = linkFile('http://www.schoolio.co.uk/diary/');
+
 Filesystem['store'] = linkFile('https://www.openbsdstore.com/');
 Filesystem['about'] = linkFile('http://www.schoolio.co.uk/about.php');
 TerminalShell.pwd = Filesystem;
@@ -238,7 +245,9 @@ TerminalShell.commands['cd'] = function(terminal, path) {
 	}
 };
 
-TerminalShell.commands['dir'] =
+TerminalShell.commands['dir'] = function(terminal, path) {
+	terminal.print('dir: not found');
+};
 TerminalShell.commands['ls'] = function(terminal, path) {
 	var name_list = $('<ul>');
 	$.each(this.pwd, function(name, obj) {
@@ -553,8 +562,8 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'xkcd': 'Yes?',
 		'su': 'God mode activated. Remember, with great power comes great ... aw, screw it, go have fun.',
 		'fuck': 'I have a headache.',
-		'whoami': 'You are Richard Stallman.',
-		'nano': 'Seriously? Why don\'t you just use Notepad.exe? Or MS Paint?',
+		'whoami': 'You need Theo de Raadt.',
+		'nano': 'Seriously? Why don\'t you just use MS Paint?',
 		'top': 'It\'s up there --^',
 		'moo':'moo',
 		'ping': 'There is another submarine three miles ahead, bearing 225, forty fathoms down.',
@@ -591,7 +600,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		} else if  (cmd == "hint") {
 			terminal.print(randomChoice([
  				'We offer some really nice polos.',
- 				$('<p>').html('This terminal will remain available at <a href="http://xkcd.com/unixkcd/">http://xkcd.com/unixkcd/</a>'),
+ 				$('<p>').html('This terminal will remain available at <a href="http://uni.xkcd.com/">http://uni.xkcd.com/</a>'),
  				'Use the source, Luke!',
  				'There are cheat codes.'
  			]));
