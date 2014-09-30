@@ -113,8 +113,8 @@ TerminalShell.commands['last'] = function(terminal) {
 TerminalShell.commands['arandom'] = 
 TerminalShell.commands['urandom'] = 
 TerminalShell.commands['random'] = function(terminal) {
-	xkcdDisplay(terminal, getRandomInt(1, xkcd.latest.num));
 	terminal.print('Thats not random...');
+	xkcdDisplay(terminal, getRandomInt(1, xkcd.latest.num));
 };
 
 TerminalShell.commands['goto'] = function(terminal, subcmd) {
