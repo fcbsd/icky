@@ -179,7 +179,9 @@ TerminalShell.commands['quit'] = function(terminal) {
 	terminal.promptActive = false;
 };
 
-TerminalShell.commands['restart'] = TerminalShell.commands['reboot'] = function(terminal) {
+TerminalShell.commands['halt'] = 
+TerminalShell.commands['restart'] = 
+TerminalShell.commands['reboot'] = function(terminal) {
 	if (this.sudo) {
 		TerminalShell.commands['poweroff'](terminal).queue(function(next) {
 			window.location.reload();
@@ -218,19 +220,20 @@ Filesystem = {
 			'GNU General Public License for more details.',
 			'',
 			'You should have received a copy of the GNU General Public License',
-			'along with this program; if not, write to the Free Software',
-			'Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.'
+			'along with this program; if not, write to the:',
+			'',
+			'Free Software Foundation, Inc.,',
+			'51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.'
 		], function(num, line) {
 			terminal.print(line);
 		});
 	}}
 };
-Filesystem['blog'] = 
-Filesystem['blag'] = 
-Filesystem['incite'] = linkFile('http://www.schoolio.co.uk/diary/');
 
+Filesystem['incite'] = linkFile('http://www.schoolio.co.uk/diary/');
 Filesystem['store'] = linkFile('https://www.openbsdstore.com/');
 Filesystem['about'] = linkFile('http://www.schoolio.co.uk/about.php');
+
 TerminalShell.pwd = Filesystem;
 
 TerminalShell.commands['cd'] = function(terminal, path) {
@@ -248,6 +251,7 @@ TerminalShell.commands['cd'] = function(terminal, path) {
 TerminalShell.commands['dir'] = function(terminal, path) {
 	terminal.print('dir: not found');
 };
+
 TerminalShell.commands['ls'] = function(terminal, path) {
 	var name_list = $('<ul>');
 	$.each(this.pwd, function(name, obj) {
@@ -307,11 +311,11 @@ TerminalShell.commands['rm'] = function(terminal, flags, path) {
 };
 
 TerminalShell.commands['motd'] = function(terminal) {
-	terminal.print($('<a>').text('MOTD: there is no message of the day...').attr('href', 'http://ict.crowsons.com/unix/'));
+	terminal.print($('<a>').text('MOTD: there is no message of the day...').attr('href', 'http://ict.crowsons.com/unix/').attr('title','Message of the Day'));
 }; 
 
 TerminalShell.commands['cheat'] = function(terminal) {
-	terminal.print($('<a>').text('*** FREE SHIPPING ENABLED ***').attr('href', 'http://store.xkcd.com/'));
+	terminal.print($('<a>').text('*** YOU WILL BE CAUGHT ***').attr('href', 'https://www.openbsdstore.com/').attr('title','YOU HAVE BEEN WARNED'));
 }; 
 
 TerminalShell.commands['reddit'] = function(terminal, num) {
@@ -324,7 +328,8 @@ TerminalShell.commands['reddit'] = function(terminal, num) {
 	terminal.print($('<iframe src="http://www.reddit.com/static/button/button1.html?width=140&url='+encodeURIComponent(url)+'&newwindow=1" height="22" width="140" scrolling="no" frameborder="0"></iframe>'));
 };
 
-TerminalShell.commands['wget'] = TerminalShell.commands['curl'] = function(terminal, dest) {
+TerminalShell.commands['wget'] = 
+TerminalShell.commands['curl'] = function(terminal, dest) {
 	if (dest) {
 		terminal.setWorking(true);
 		var browser = $('<div>')
@@ -351,7 +356,7 @@ TerminalShell.commands['irc'] = function(terminal, nick, channel) {
 		$('.irc').slideUp('fast', function() {
 			$(this).remove();
 		});
-		var url = "http://widget.mibbit.com/?server=holmes.freenode.net&channel="+channel;
+		var url = "http://widget.mibbit.com/?server=orwell.freenode.net&channel="+channel;
 		if (nick) {
 			url += "&nick=" + encodeURIComponent(nick);
 		}
@@ -439,7 +444,7 @@ TerminalShell.commands['locate'] = function(terminal, what) {
 
 Adventure = {
 	rooms: {
-		0:{description:'You are at a computer using unixkcd.', exits:{west:1, south:10}},
+		0:{description:'You are at a computer using a shell.', exits:{west:1, south:10}},
 		1:{description:'Life is peaceful there.', exits:{east:0, west:2}},
 		2:{description:'In the open air.', exits:{east:1, west:3}},
 		3:{description:'Where the skies are blue.', exits:{east:2, west:4}},
@@ -510,6 +515,7 @@ TerminalShell.commands['bash'] = function(terminal, what) {
 			terminal.print('Give Up!?!');
 		}
 	} else {
+		if (!what) { what="head"; }
 		terminal.print('Bashing your '+what+' will hurt...');
 	}
 };
@@ -543,9 +549,10 @@ TerminalShell.commands['sleep'] = function(terminal, duration) {
 };
 
 // No peeking!
-TerminalShell.commands['help'] = TerminalShell.commands['halp'] = function(terminal) {
-	terminal.print('That would be cheating!');
-}; 
+//TerminalShell.commands['help'] = 
+//TerminalShell.commands['halp'] = function(terminal) {
+//	terminal.print('That would be cheating!');
+//}; 
 
 TerminalShell.fallback = function(terminal, cmd) {
 	oneliners = {
@@ -600,7 +607,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		} else if  (cmd == "hint") {
 			terminal.print(randomChoice([
  				'We offer some really nice polos.',
- 				$('<p>').html('This terminal will remain available at <a href="http://uni.xkcd.com/">http://uni.xkcd.com/</a>'),
+ 				$('<p>').html('This terminal will remain available at <a href="http://uni.xkcd.com/" title="unixkcd">http://uni.xkcd.com/</a>'),
  				'Use the source, Luke!',
  				'There are cheat codes.'
  			]));
@@ -613,7 +620,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		} else if (/:\(\)\s*{\s*:\s*\|\s*:\s*&\s*}\s*;\s*:/.test(cmd)) {
 			Terminal.setWorking(true);
 		} else {
-			$.get("/unixkcd/missing", {cmd: cmd});
+			$.get("/unix/missing", {cmd: cmd});
 			return false;
 		}
 	}
@@ -629,7 +636,8 @@ $(document).ready(function() {
 			$('#screen').one('cli-ready', function(e) {
 				Terminal.runCommand('cat welcome.txt');
 			});
-			Terminal.runCommand('display '+xkcd.latest.num+'/'+pathFilename(xkcd.latest.img));
+// commented out			Terminal.runCommand('display '+xkcd.latest.num+'/'+pathFilename(xkcd.latest.img));
+				Terminal.runCommand('random');
 		}, function() {
 			Terminal.print($('<p>').addClass('error').html('XKCD terminal is available at <a href="http://uni.xkcd.com/">unixkcd</a>'));
 			Terminal.promptActive = true;
