@@ -110,6 +110,10 @@ TerminalShell.commands['last'] = function(terminal) {
 	xkcdDisplay(terminal, xkcd.latest.num);
 };
 
+TerminalShell.commands['count'] = function(terminal) {
+	terminal.print(xkcd.latest.num);
+};
+
 TerminalShell.commands['arandom'] = 
 TerminalShell.commands['urandom'] = 
 TerminalShell.commands['random'] = function(terminal) {
@@ -156,7 +160,8 @@ TerminalShell.filters.push(function (terminal, cmd) {
 	}
 });
 
-TerminalShell.commands['shutdown'] = TerminalShell.commands['poweroff'] = function(terminal) {
+TerminalShell.commands['shutdown'] = 
+TerminalShell.commands['poweroff'] = function(terminal) {
 	if (this.sudo) {
 		terminal.print('Broadcast message from guest@icky');
 		terminal.print();
@@ -191,6 +196,15 @@ TerminalShell.commands['reboot'] = function(terminal) {
 	}
 };
 
+TerminalShell.commands['su'] = function(terminal,name) {
+	$('#prompt').fadeOut(500);
+	if(!name) {
+		name = 'root';
+	}
+	terminal.config.prompt = setPrompt(name,'icky','/');
+	$('#prompt').fadeIn();
+};
+
 function linkFile(url) {
 	return {type:'dir', enter:function() {
 		window.location = url;
@@ -200,8 +214,8 @@ function linkFile(url) {
 Filesystem = {
 	'welcome.txt': {type:'file', read:function(terminal) {
 		terminal.print($('<h4>').text('Welcome to the ICKY console.'));
-		terminal.print('To navigate use a map or *NIX commands.');
-		terminal.print('Use "ls", "cat", and "cd" to navigate the filesystem.');
+		terminal.print('To navigate use a map');
+		terminal.print('			or *NIX commands.');
 	}},
 	'license.txt': {type:'file', read:function(terminal) {
 		terminal.print($('<p>').html('Client-side logic for Wordpress CLI theme :: <a href="http://thrind.xamai.ca/">R. McFarland, 2006, 2007, 2008</a>'));
@@ -549,6 +563,7 @@ TerminalShell.commands['sleep'] = function(terminal, duration) {
 };
 
 // No peeking!
+// Uncomment to hide help command
 //TerminalShell.commands['help'] = 
 //TerminalShell.commands['halp'] = function(terminal) {
 //	terminal.print('That would be cheating!');
@@ -567,7 +582,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'date': 'March 32nd',
 		'hello': 'Why hello there!',
 		'xkcd': 'Yes?',
-		'su': 'God mode activated. Remember, with great power comes great ... aw, screw it, go have fun.',
+//		'su': 'God mode activated. Remember, with great power comes great ... aw, screw it, go have fun.',
 		'fuck': 'I have a headache.',
 		'whoami': 'You need Theo de Raadt.',
 		'nano': 'Seriously? Why don\'t you just use MS Paint?',
@@ -612,7 +627,7 @@ TerminalShell.fallback = function(terminal, cmd) {
  				'There are cheat codes.'
  			]));
 		} else if (cmd == 'find kitten') {
-			terminal.print($('<iframe width="800" height="600" src="http://www.robotfindskitten.net/rfk.swf"></iframe>'));
+			terminal.print('dead');
 		} else if (cmd == 'buy stuff') {
 			Filesystem['store'].enter();
 		} else if (cmd == 'time travel') {
@@ -620,7 +635,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		} else if (/:\(\)\s*{\s*:\s*\|\s*:\s*&\s*}\s*;\s*:/.test(cmd)) {
 			Terminal.setWorking(true);
 		} else {
-			$.get("/unix/missing", {cmd: cmd});
+			$.get("/unix/miss.php", {search: cmd});
 			return false;
 		}
 	}

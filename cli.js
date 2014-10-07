@@ -48,6 +48,15 @@ function entityEncode(str) {
 	return str;
 }
 
+function setPrompt(name, host, pwd) {
+	stdlinend = '> ';
+	if(name == 'root') {
+		stdlinend = '# ';
+	}
+	myprompt = name+'@'+host+' '+pwd+stdlinend;
+	return myprompt;
+}
+
 var TerminalShell = {
 	commands: {
 		help: function help(terminal) {
@@ -103,13 +112,13 @@ var Terminal = {
 	output: TerminalShell,
 	
 	config: {
-		scrollStep:			20,
+		scrollStep:		20,
 		scrollSpeed:		100,
-		bg_color:			'#000',
-		fg_color:			'#FFF',
+		bg_color:		'#000',
+		fg_color:		'#FFF',
 		cursor_blink_time:	700,
 		cursor_style:		'block',
-		prompt:			'guest@icky:/$ ',
+		prompt:			setPrompt('anonymous','icky','/'),
 		spinnerCharacters:	['[   ]','[.  ]','[.. ]','[...]'],
 		spinnerSpeed:		250,
 		typingSpeed:		50
