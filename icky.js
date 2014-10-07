@@ -563,11 +563,10 @@ TerminalShell.commands['sleep'] = function(terminal, duration) {
 };
 
 // No peeking!
-// Uncomment to hide help command
-//TerminalShell.commands['help'] = 
-//TerminalShell.commands['halp'] = function(terminal) {
-//	terminal.print('That would be cheating!');
-//}; 
+TerminalShell.commands['help'] = 
+TerminalShell.commands['halp'] = function(terminal) {
+	terminal.print('That would be cheating!');
+}; 
 
 TerminalShell.fallback = function(terminal, cmd) {
 	oneliners = {
@@ -676,7 +675,7 @@ $(document).ready(function() {
 		} else if (konamiCount == 3) {
 			shake($('#screen'));
 		} else if (konamiCount == 4) {
-			$('#screen').css('background', 'url(/unix/over9000.png) center no-repeat');
+			$('#screen').css('background', 'url(/unix/puffy.png) center no-repeat');
 		}
 		
 		$('<div>')

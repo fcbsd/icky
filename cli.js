@@ -69,7 +69,15 @@ var TerminalShell = {
 		}, 
 		clear: function(terminal) {
 			terminal.clear();
-		}
+		},
+		map: function map(terminal) {
+			terminal.print($('<h3>Directions</h3>'));
+			cmd_list = $('<ul>');
+			$.each(this.commands, function(name, func) {
+				cmd_list.append($('<b>').text(name+' '));
+			});
+			terminal.print(cmd_list);
+		} 
 	},
 	filters: [],
 	fallback: null,
