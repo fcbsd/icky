@@ -176,6 +176,10 @@ TerminalShell.commands['bye'] = function(terminal) {
 	terminal.print('do you think this is ftp?');
 };
 
+TerminalShell.commands['sendbug'] = function(terminal) {
+	terminal.print('it\'s too late ... its crawling with ticks!');
+};
+
 TerminalShell.commands['logout'] =
 TerminalShell.commands['exit'] = 
 TerminalShell.commands['quit'] = function(terminal) {
@@ -216,6 +220,7 @@ Filesystem = {
 		terminal.print($('<h4>').text('Welcome to the ICKY console.'));
 		terminal.print('To navigate use a map');
 		terminal.print('			or *NIX commands.');
+		terminal.print($('<p>').html('To report a bug use <a href="mailto:bugs@crowsons.com" title="bugs">sendbug(1)</a>'));
 	}},
 	'license.txt': {type:'file', read:function(terminal) {
 		terminal.print($('<p>').html('Client-side logic for Wordpress CLI theme :: <a href="http://thrind.xamai.ca/">R. McFarland, 2006, 2007, 2008</a>'));
