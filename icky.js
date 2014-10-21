@@ -14,6 +14,15 @@ function randomChoice(items) {
 	return items[getRandomInt(0, items.length-1)];
 }
 
+function oneLiner(terminal, msg, msgmap) {
+	if (msgmap.hasOwnProperty(msg)) {
+		terminal.print(msgmap[msg]);
+		return true;
+	} else {
+		return false;
+	}
+}
+
 var xkcd = {
 	latest: null,
 	last: null,
@@ -127,7 +136,6 @@ TerminalShell.commands['goto'] = function(terminal, subcmd) {
 	});
 	xkcdDisplay(terminal, 292);
 };
-
 
 TerminalShell.commands['sudo'] = function(terminal) {
 	var cmd_args = Array.prototype.slice.call(arguments);
@@ -426,24 +434,16 @@ TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
 	}
 };
 
-function oneLiner(terminal, msg, msgmap) {
-	if (msgmap.hasOwnProperty(msg)) {
-		terminal.print(msgmap[msg]);
-		return true;
-	} else {
-		return false;
-	}
-}
-
 TerminalShell.commands['man'] = function(terminal, what) {
-	pages = {
+	manpages = {
 		'cat':  'You are now riding a half-man half-cat.',
 		'help': 'Man, help me out here.',
 		'last': 'Man, last night was AWESOME.',
 		'man': 'yep he is a man.',
-		'next': 'Request confirmed; you will be reincarnated as a man next.'
+		'next': 'Request confirmed; you will be reincarnated as a man next.',
+		'sendbug': 'View the source Luke'
 	};
-	if (!oneLiner(terminal, what, pages)) {
+	if (!oneLiner(terminal, what, manpages)) {
 		terminal.print('Oh, I\'m sure you can figure it out.');
 	}
 };
@@ -596,7 +596,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'find': 'What do you want to find? Kitten would be nice.',
 		'hello':'Hello.','more':'Oh, yes! More! More!',
 		'your gay': 'Keep your hands off it!',
-		'hi':'Hi.','echo': 'Echo ... echo ... echo ...',
+		'hi':'Hi.','echo': 'ECHO ... ECho ... Echo ... echo ... echo ...',
 		'ssh': 'ssh, this is a library.',
 		'uname': 'Illudium Q-36 Explosive Space Modulator',
 		'finger': 'Mmmmmm...',
