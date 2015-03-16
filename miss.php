@@ -6,7 +6,7 @@ foreach($_GET as $key => $value) {
 	$missing[$key] = $value;
 }
 
-$missfp = fopen('/unix/missing.txt', 'a');
+$missfp = fopen('/htdocs/ict/unix/missing.txt', 'a');
 fputcsv($missfp, $missing);
 fclose($missfp);
 
