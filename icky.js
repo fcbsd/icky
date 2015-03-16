@@ -101,10 +101,12 @@ var xkcdDisplay = TerminalShell.commands['display'] = function(terminal, path) {
 	}, fail);
 };
 
+TerminalShell.commands['n'] =
 TerminalShell.commands['next'] = function(terminal) {
 	xkcdDisplay(terminal, xkcd.last.num+1);
 };
 
+TerminalShell.commands['p'] =
 TerminalShell.commands['previous'] =
 TerminalShell.commands['prev'] = function(terminal) {
 	xkcdDisplay(terminal, xkcd.last.num-1);
@@ -312,6 +314,14 @@ TerminalShell.commands['cat'] = function(terminal, path) {
 	}
 };
 
+TerminalShell.commands['finger'] = function(terminal, name) {
+	if (name == 'mouse') {
+		linkFile('http://en.wikipedia.org/wiki/Fingermouse').enter();
+	} else {
+		terminal.print('finger: you cannot poke '+name+' today!');
+	}
+};
+
 TerminalShell.commands['rm'] = function(terminal, flags, path) {
 	if (flags && flags[0] != '-') {
 		path = flags;
@@ -407,7 +417,7 @@ TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
 			if (($.browser.name == 'msie') || ($.browser.name == 'firefox' && $.browser.versionX < 3)) {
 				terminal.print($('<p>').append($('<a>').attr('href', 'http://abetterbrowser.org/').text('To complete installation, click here.')));
 			} else {
-				terminal.print('This looks pretty good to me.');
+				terminal.print('This '+$.browser.name+' looks pretty good to me.');
 			}
 		} else if (subcmd == 'dist-upgrade') {
 			var longNames = {'obsd':'OpenBSD', 'mac':'OS X', 'linux':'Linux'};
@@ -415,7 +425,7 @@ TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
 			if (name in longNames) {
 				name = longNames[name];
 			} else {
-				name = 'something fancy';
+				name = 'something fancy'+$.os.name;
 			}
 			terminal.print('You are already running '+name+'.');
 		} else if (subcmd == 'moo') {
@@ -655,7 +665,6 @@ $(document).ready(function() {
 			$('#screen').one('cli-ready', function(e) {
 				Terminal.runCommand('cat welcome.txt');
 			});
-// commented out			Terminal.runCommand('display '+xkcd.latest.num+'/'+pathFilename(xkcd.latest.img));
 				Terminal.runCommand('random');
 		}, function() {
 			Terminal.print($('<p>').addClass('error').html('XKCD terminal is available at <a href="http://uni.xkcd.com/">unixkcd</a>'));
