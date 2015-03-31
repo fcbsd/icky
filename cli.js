@@ -127,8 +127,8 @@ var Terminal = {
 		cursor_blink_time:	700,
 		cursor_style:		'block',
 		prompt:			setPrompt('anonymous','icky','/'),
-		spinnerCharacters:	['[   ]','[.  ]','[.. ]','[...]'],
-		spinnerSpeed:		250,
+		spinnerCharacters:	['[   ]','[.  ]','[.. ]','[...]','[ ..]','[  .]'],
+		spinnerSpeed:		300,
 		typingSpeed:		50
 	},
 	

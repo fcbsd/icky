@@ -128,7 +128,12 @@ TerminalShell.commands['count'] = function(terminal) {
 TerminalShell.commands['arandom'] = 
 TerminalShell.commands['urandom'] = 
 TerminalShell.commands['random'] = function(terminal) {
-	terminal.print('That\'s not random...');
+	terminal.print('That\'s not arc4random(3)...');
+	xkcdDisplay(terminal, getRandomInt(1, xkcd.latest.num));
+};
+
+TerminalShell.commands['arc4random'] = function(terminal) {
+	terminal.print('wow true random...');
 	xkcdDisplay(terminal, getRandomInt(1, xkcd.latest.num));
 };
 
@@ -226,10 +231,15 @@ function linkFile(url) {
 }
 
 Filesystem = {
+	'motd': {type:'file', read:function(terminal) {
+		terminal.print($('<h4>').text('ICKY-not-quite-current (GENERIC) #888 '));
+		terminal.print($('<h4>').text('Welcome to the ICKY console.'));
+		terminal.print($('<p>').html('To report a bug use <a href="mailto:bugs@crowsons.com" title="bugs">sendbug(1)</a>'));
+	}},
 	'welcome.txt': {type:'file', read:function(terminal) {
 		terminal.print($('<h4>').text('Welcome to the ICKY console.'));
 		terminal.print('To navigate use a map');
-		terminal.print('			or *NIX commands.');
+		terminal.print('or *NIX commands.');
 		terminal.print($('<p>').html('To report a bug use <a href="mailto:bugs@crowsons.com" title="bugs">sendbug(1)</a>'));
 	}},
 	'license.txt': {type:'file', read:function(terminal) {
@@ -315,7 +325,9 @@ TerminalShell.commands['cat'] = function(terminal, path) {
 };
 
 TerminalShell.commands['finger'] = function(terminal, name) {
-	if (name == 'mouse') {
+	if (!name) {
+		terminal.print('Mmmmm...');
+	} else if (name == 'mouse') {
 		linkFile('http://en.wikipedia.org/wiki/Fingermouse').enter();
 	} else {
 		terminal.print('finger: you cannot poke '+name+' today!');
@@ -565,7 +577,7 @@ TerminalShell.commands['light'] = function(terminal, what) {
 TerminalShell.commands['sleep'] = function(terminal, duration) {
 	duration = Number(duration);
 	if (!duration) {
-		duration = 5;
+		duration = 1;
 	}
 	terminal.setWorking(true);
 	terminal.print("You take a nap.");
@@ -609,7 +621,6 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'hi':'Hi.','echo': 'ECHO ... ECho ... Echo ... echo ... echo ...',
 		'ssh': 'ssh, this is a library.',
 		'uname': 'Illudium Q-36 Explosive Space Modulator',
-		'finger': 'Mmmmmm...',
 		'kill': 'Terminator deployed to 1984.',
 		'use the force luke': 'I believe you mean source.',
 		'use the source luke': 'I\'m not luke, you\'re luke!',
