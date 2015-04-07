@@ -144,6 +144,10 @@ TerminalShell.commands['goto'] = function(terminal, subcmd) {
 	xkcdDisplay(terminal, 292);
 };
 
+TerminalShell.commands['gps'] = function(terminal) {
+		var where = get_mylocation();
+};
+
 TerminalShell.commands['sudo'] = function(terminal) {
 	var cmd_args = Array.prototype.slice.call(arguments);
 	cmd_args.shift(); // terminal
@@ -178,10 +182,10 @@ TerminalShell.filters.push(function (terminal, cmd) {
 TerminalShell.commands['shutdown'] = 
 TerminalShell.commands['poweroff'] = function(terminal) {
 	if (this.sudo) {
-		terminal.print('Broadcast message from guest@icky');
+		terminal.print('Broadcast message from '+name+'@icky');
 		terminal.print();
 		terminal.print('The system is going down for maintenance NOW!');
-		return $('#screen').fadeOut();
+		return $('#screen').fadeOut(5000);
 	} else {
 		terminal.print('Must be root.');
 	}

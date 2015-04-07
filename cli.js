@@ -33,8 +33,32 @@ function trim(value) {
 		return ltrim(rtrim(value));
 	}
 	return '';
-} /**** end from http://snippets.dzone.com/posts/show/701 ****/
+} /* end from http://snippets.dzone.com/posts/show/701 */
 
+/* Get Location and Show Position Functions */
+/* from: http://diveintohtml5.info/geolocation.html */
+function get_mylocation() {
+	if (geoPosition.init()) {
+		geoPosition.getCurrentPosition(show_position, loc_error,{enableHighAccuracy:true});
+	} else {
+		return 'You are truly lost...';
+	}
+}
+
+function show_position(pos) {
+		var mypos = new Object();
+		mypos['latitude'] = pos.coords.latitude;
+		mypos['longitude'] = pos.coords.longitude;
+		alert("You are at: "+mypos['latitude']+' '+mypos['longitude']);
+		// do something
+		return mypos;
+}
+
+function loc_error(err) {
+		return err.message;
+}
+
+/* End get location function */
 function entityEncode(str) {
 	str = str.replace(/&/g, '&amp;');
 	str = str.replace(/</g, '&lt;');
@@ -100,7 +124,7 @@ var TerminalShell = {
 			}
 			this.lastCommand = cmd;
 		} catch (e) {
-			terminal.print($('<p>').addClass('error').text('An internal error occured: '+e));
+			terminal.print($('<p>').addClass('error').text('An internal error occurred: '+e));
 			terminal.setWorking(false);
 		}
 	}
