@@ -424,6 +424,10 @@ TerminalShell.commands['unixkcd'] = function(terminal, nick) {
 };
 
 TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
+	terminal.print('You need pkg_add...');
+};
+
+TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 	if (!this.sudo && (subcmd in {'update':true, 'upgrade':true, 'dist-upgrade':true})) {
 		terminal.print('E: Unable to lock the administration directory, are you root?');
 	} else {
