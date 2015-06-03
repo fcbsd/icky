@@ -424,15 +424,11 @@ TerminalShell.commands['unixkcd'] = function(terminal, nick) {
 };
 
 TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
-	terminal.print('You need pkg_add...');
-};
-
-TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 	if (!this.sudo && (subcmd in {'update':true, 'upgrade':true, 'dist-upgrade':true})) {
 		terminal.print('E: Unable to lock the administration directory, are you root?');
 	} else {
 		if (subcmd == 'update') {
-			terminal.print('Reading package lists... Done');
+			terminal.print('UPDATE: you need pkg_add!?!');
 		} else if (subcmd == 'upgrade') {
 			if (($.browser.name == 'msie') || ($.browser.name == 'firefox' && $.browser.versionX < 3)) {
 				terminal.print($('<p>').append($('<a>').attr('href', 'http://abetterbrowser.org/').text('To complete installation, click here.')));
@@ -445,7 +441,7 @@ TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 			if (name in longNames) {
 				name = longNames[name];
 			} else {
-				name = 'something fancy'+$.os.name;
+				name = 'something fancy '+$.os.name;
 			}
 			terminal.print('You are already running '+name+'.');
 		} else if (subcmd == 'moo') {
@@ -458,6 +454,43 @@ TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 			terminal.print('...."Have you mooed today?"...');
 		} else if (!subcmd) {
 			terminal.print('This APT has Super Cow Powers.');
+		} else {
+			terminal.print('E: Invalid operation '+subcmd);
+		}
+	}
+};
+
+TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
+	if (!this.sudo && (subcmd in {'-u':true, '-vui':true})) {
+		terminal.print('E: Unable to lock the administration directory, are you root?');
+	} else {
+		if (subcmd == '-u') {
+			terminal.print('Reading package lists... Done');
+		} else if (subcmd == 'puffy') {
+				terminal.print("              |    .");
+				terminal.print("          .   |L  /|   .");
+				terminal.print("      _ . |\ _| \--+._/| .");
+				terminal.print("     / ||\| Y J  )   / |/| ./");
+				terminal.print("    J  |)'( |        ` F`.'/");
+				terminal.print("  -<|  F         __     .-<");
+				terminal.print("    | /       .-'. `.  /-. L___");
+				terminal.print("    J \      <    \  | | O\|.-'");
+				terminal.print("  _J \  .-    \/ O | | \  |F");
+				terminal.print(" '-F  -<_.     \   .-'  `-' L__");
+				terminal.print("__J  _   _.     >-'  )._.   |-'");
+				terminal.print("`-|.'   /_.           \_|   F ");
+				terminal.print("  /.-   .                _.< ");
+				terminal.print(" /'    /.'             .'  `\ ");
+				terminal.print("  /L  /'   |/      _.-'-\ ");
+				terminal.print(" /'J       ___.---'\| ");
+				terminal.print("   |\  .--' V  | `. ` ");
+				terminal.print("   |/`. `-.     `._) ");
+				terminal.print("      / .-.\ ");
+				terminal.print("VK    \ (  `\ ");
+				terminal.print("       `.\ ");
+				terminal.print('...."Puffy Power!"...');
+		} else if (!subcmd) {
+			terminal.print('This pkg_add has Super Fish Powers.');
 		} else {
 			terminal.print('E: Invalid operation '+subcmd);
 		}
