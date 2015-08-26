@@ -148,6 +148,27 @@ TerminalShell.commands['gps'] = function(terminal) {
 		var where = get_mylocation();
 };
 
+TerminalShell.commands['doas'] = function(terminal) {
+	var cmd_args = Array.prototype.slice.call(arguments);
+	cmd_args.shift(); // terminal
+	if (cmd_args.join(' ') == 'you like') {
+		terminal.print('I will, thank you.');
+	} else {
+		var cmd_name = cmd_args.shift();
+		cmd_args.unshift(terminal);
+		cmd_args.push('doas');
+		if (TerminalShell.commands.hasOwnProperty(cmd_name)) {
+			this.doas = true;
+			this.commands[cmd_name].apply(this, cmd_args);
+			delete this.doas;
+		} else if (!cmd_name) {
+			terminal.print('you can do as you like...');
+		} else {
+			terminal.print('doas: '+cmd_name+': command not found');
+		}
+	}
+};
+
 TerminalShell.commands['sudo'] = function(terminal) {
 	var cmd_args = Array.prototype.slice.call(arguments);
 	cmd_args.shift(); // terminal
@@ -181,7 +202,7 @@ TerminalShell.filters.push(function (terminal, cmd) {
 
 TerminalShell.commands['shutdown'] = 
 TerminalShell.commands['poweroff'] = function(terminal) {
-	if (this.sudo) {
+	if (this.doas) {
 		terminal.print('Broadcast message from '+name+'@icky');
 		terminal.print();
 		terminal.print('The system is going down for maintenance NOW!');
@@ -210,7 +231,7 @@ TerminalShell.commands['quit'] = function(terminal) {
 TerminalShell.commands['halt'] = 
 TerminalShell.commands['restart'] = 
 TerminalShell.commands['reboot'] = function(terminal) {
-	if (this.sudo) {
+	if (this.doas) {
 		TerminalShell.commands['poweroff'](terminal).queue(function(next) {
 			window.location.reload();
 		});
@@ -355,7 +376,7 @@ TerminalShell.commands['rm'] = function(terminal, flags, path) {
 			}
 		}
 	} else if (flags == '-rf' && path == '/') {
-		if (this.sudo) {
+		if (this.doas) {
 			TerminalShell.commands = {};
 		} else {
 			terminal.print('rm: cannot remove /: Permission denied');
@@ -461,7 +482,7 @@ TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
 };
 
 TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
-	if (!this.sudo && (subcmd in {'-u':true, '-vui':true})) {
+	if (!this.doas && (subcmd in {'-u':true, '-vui':true})) {
 		terminal.print('E: Unable to lock the administration directory, are you root?');
 	} else {
 		if (subcmd == '-u') {
@@ -489,8 +510,10 @@ TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 				terminal.print("VK    \ (  `\ ");
 				terminal.print("       `.\ ");
 				terminal.print('...."Puffy Power!"...');
+		} else if (subcmd == '-vui') {
+			terminal.print('is this interactive enough for you?');
 		} else if (!subcmd) {
-			terminal.print('This pkg_add has Super Fish Powers.');
+			terminal.print('This pkg_add has Puffer Fish Powers.');
 		} else {
 			terminal.print('E: Invalid operation '+subcmd);
 		}
