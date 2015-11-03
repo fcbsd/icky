@@ -173,6 +173,7 @@ TerminalShell.commands['sudo'] = function(terminal) {
 	var cmd_args = Array.prototype.slice.call(arguments);
 	cmd_args.shift(); // terminal
 	if (cmd_args.join(' ') == 'make me a sandwich') {
+		xkcdDisplay(terminal, 149);
 		terminal.print('Okay.');
 	} else {
 		var cmd_name = cmd_args.shift();
@@ -187,6 +188,23 @@ TerminalShell.commands['sudo'] = function(terminal) {
 		} else {
 			terminal.print('sudo: '+cmd_name+': command not found');
 		}
+	}
+};
+
+TerminalShell.commands['uname'] = function(terminal) {
+	var cmd_args = Array.prototype.slice.call(arguments);
+	var os = 'OpenBSD ';
+	var ver = '5.8 ';
+	var host = 'icky.schoolio.co.uk ';
+	var build = 'GENERIC.MP#42 ';
+	var arch = 'amd64 ';
+	cmd_args.shift(); // terminal
+	if (cmd_args.join(' ') == '-a') {
+		terminal.print(os+host+ver+build+arch);
+	} else if (cmd_args.join(' ') == '-n') {
+		terminal.print(host);
+	} else {
+		terminal.print(os);
 	}
 };
 
@@ -526,6 +544,7 @@ TerminalShell.commands['man'] = function(terminal, what) {
 		'help': 'Man, help me out here.',
 		'last': 'Man, last night was AWESOME.',
 		'man': 'yep he is a man.',
+		'uname': 'me Tarzan',
 		'next': 'Request confirmed; you will be reincarnated as a man next.',
 		'sendbug': 'View the source Luke'
 	};
@@ -672,9 +691,8 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'date': 'March 32nd',
 		'hello': 'Why hello there!',
 		'xkcd': 'Yes?',
-//		'su': 'God mode activated. Remember, with great power comes great ... aw, screw it, go have fun.',
 		'fuck': 'I have a headache.',
-		'whoami': 'You need Theo de Raadt.',
+		'whoami': 'ask Theo de Raadt.',
 		'nano': 'Seriously? Why don\'t you just use MS Paint?',
 		'top': 'It\'s up there --^',
 		'moo':'moo',
@@ -684,7 +702,6 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'your gay': 'Keep your hands off it!',
 		'hi':'Hi.','echo': 'ECHO ... ECho ... Echo ... echo ... echo ...',
 		'ssh': 'ssh, this is a library.',
-		'uname': 'Illudium Q-36 Explosive Space Modulator',
 		'kill': 'Terminator deployed to 1984.',
 		'use the force luke': 'I believe you mean source.',
 		'use the source luke': 'I\'m not luke, you\'re luke!',
