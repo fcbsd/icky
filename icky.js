@@ -196,8 +196,8 @@ TerminalShell.commands['uname'] = function(terminal) {
 	var os = 'OpenBSD ';
 	var ver = '5.8 ';
 	var host = 'icky.schoolio.co.uk ';
-	var build = 'GENERIC.MP#42 ';
-	var arch = 'amd64 ';
+	var build = randomChoice(['GENERIC.MP#42 ','GENERIC#914 ']);
+	var arch = randomChoice(['amd64 ', 'arm ', 'sparc ', 'sparc64 ', 'zaurus ']);
 	cmd_args.shift(); // terminal
 	if (cmd_args.join(' ') == '-a') {
 		terminal.print(os+host+ver+build+arch);
@@ -509,7 +509,7 @@ TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 	}
 };
 
-TerminalShell.commands['man'] = function(terminal, what) {
+TerminalShell.commands['man'] = function(terminal, man) {
 	manpages = {
 		'cat':  'You are now riding a half-man half-cat.',
 		'help': 'Man, help me out here.',
@@ -519,21 +519,25 @@ TerminalShell.commands['man'] = function(terminal, what) {
 		'next': 'Request confirmed; you will be reincarnated as a man next.',
 		'sendbug': 'View the source Luke'
 	};
-	if (!oneLiner(terminal, what, manpages)) {
+	if (!oneLiner(terminal, man, manpages)) {
 		terminal.print('Oh, I\'m sure you can figure it out.');
 	}
 };
 
 TerminalShell.commands['locate'] = function(terminal, what) {
 	keywords = {
-		'ninja': 'Ninja can not be found!',
+		'ninja': 'Ninja cannot be found!',
 		'keys': 'Have you checked your coat pocket?',
 		'joke': 'Joke found on user.',
 		'problem': 'Problem exists between keyboard and chair.',
 		'raptor': 'BEHIND YOU!!!'
 	};
 	if (!oneLiner(terminal, what, keywords)) {
-		terminal.print('Locate what?');
+		if(!what) {
+			terminal.print('Locate what?');
+		} else {
+			terminal.print('Locate '+what+'?');
+		}
 	}
 };
 
@@ -644,8 +648,7 @@ TerminalShell.commands['sleep'] = function(terminal, duration) {
 };
 
 // No peeking!
-TerminalShell.commands['help'] = 
-TerminalShell.commands['halp'] = function(terminal) {
+TerminalShell.commands['help'] = function(terminal) {
 	terminal.print('That would be cheating!');
 }; 
 
@@ -663,7 +666,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'hello': 'Why hello there!',
 		'xkcd': 'Yes?',
 		'fuck': 'I have a headache.',
-		'whoami': 'ask Theo de Raadt.',
+		'whoami': 'ask Theo de Raadt...',
 		'nano': 'Seriously? Why don\'t you just use MS Paint?',
 		'top': 'It\'s up there --^',
 		'moo':'moo',
@@ -671,17 +674,18 @@ TerminalShell.fallback = function(terminal, cmd) {
 		'find': 'What do you want to find? Kitten would be nice.',
 		'hello':'Hello.','more':'Oh, yes! More! More!',
 		'your gay': 'Keep your hands off it!',
-		'hi':'Hi.','echo': 'ECHO ... ECho ... Echo ... echo ... echo ...',
+		'hi':'Hi.','echo': 'ECHO ... ECHo ... ECho ... Echo ... echo ... echo ...',
 		'ssh': 'ssh, this is a library.',
 		'kill': 'Terminator deployed to 1984.',
 		'use the force luke': 'I believe you mean source.',
 		'use the source luke': 'I\'m not luke, you\'re luke!',
+		'vim': 'no improved vi here...',
 		'serenity': 'You can\'t take the sky from me.',
 		'who': 'Doctor Who?',
 		'xyzzy': 'Nothing happens.'
 	};
 	oneliners['emacs'] = 'You should really use vim.';
-	oneliners['vi'] = oneliners['vim'] = 'You should really use emacs.';
+	oneliners['vi'] = 'You should really use mg.';
 	
 	cmd = cmd.toLowerCase();
 	if (!oneLiner(terminal, cmd, oneliners)) {
@@ -692,7 +696,7 @@ TerminalShell.fallback = function(terminal, cmd) {
 				'6/M/Battle School',
 				'48/M/The White House',
 				'7/F/Rapture',
-				'Exactly your age/A gender you\'re attracted to/Far far away.',
+				'In your age range/A gender you\'re attracted to/Far far away...',
 				'7,831/F/Lothlórien',
 				'42/M/FBI Field Office'
 			]));
@@ -710,7 +714,18 @@ TerminalShell.fallback = function(terminal, cmd) {
 		} else if (cmd == 'time travel') {
 			xkcdDisplay(terminal, 630);
 		} else if (/:\(\)\s*{\s*:\s*\|\s*:\s*&\s*}\s*;\s*:/.test(cmd)) {
-			Terminal.setWorking(true);
+			// this matches a fork bomb :(){:|:&};:
+			// thanks to https://regex101.com/
+			terminal.setWorking(true);
+			window.setTimeout( function() { 
+				terminal.setWorking(false); 
+				terminal.print(randomChoice([
+					'All process terminated',
+					'fork bomber',
+					'sysadmin angry...',
+					'raptors loose...'
+				]));
+				}, 1000 * getRandomInt(10,20));
 		} else {
 			$.get("/unix/miss.php", {search: cmd});
 			return false;
