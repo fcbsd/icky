@@ -462,46 +462,9 @@ TerminalShell.commands['unixkcd'] = function(terminal, nick) {
 	TerminalShell.commands['curl'](terminal, "http://uni.xkcd.com/");
 };
 
-TerminalShell.commands['apt-get'] = function(terminal, subcmd) {
-	if (!this.sudo && (subcmd in {'update':true, 'upgrade':true, 'dist-upgrade':true})) {
-		terminal.print('E: Unable to lock the administration directory, are you root?');
-	} else {
-		if (subcmd == 'update') {
-			terminal.print('UPDATE: you need pkg_add!?!');
-		} else if (subcmd == 'upgrade') {
-			if (($.browser.name == 'msie') || ($.browser.name == 'firefox' && $.browser.versionX < 3)) {
-				terminal.print($('<p>').append($('<a>').attr('href', 'http://abetterbrowser.org/').text('To complete installation, click here.')));
-			} else {
-				terminal.print('This '+$.browser.name+' looks pretty good to me.');
-			}
-		} else if (subcmd == 'dist-upgrade') {
-			var longNames = {'obsd':'OpenBSD', 'mac':'OS X', 'linux':'Linux'};
-			var name = $.os.name;
-			if (name in longNames) {
-				name = longNames[name];
-			} else {
-				name = 'something fancy '+$.os.name;
-			}
-			terminal.print('You are already running '+name+'.');
-		} else if (subcmd == 'moo') {
-			terminal.print('        (__)');
-			terminal.print('        (oo)');
-			terminal.print('  /------\\/ ');
-			terminal.print(' / |    ||  ');
-			terminal.print('*  /\\---/\\  ');
-			terminal.print('   ~~   ~~  '); 
-			terminal.print('...."Have you mooed today?"...');
-		} else if (!subcmd) {
-			terminal.print('This APT has Super Cow Powers.');
-		} else {
-			terminal.print('E: Invalid operation '+subcmd);
-		}
-	}
-};
-
 TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
-	if (!this.doas && (subcmd in {'-u':true, '-vui':true})) {
-		terminal.print('E: Unable to lock the administration directory, are you root?');
+	if (!this.doas && (subcmd in {'-u':true, '-vui':true, 'moo':true, 'puffy':true})) {
+		terminal.print('Fatal error: pkg_add must be run as root');
 	} else {
 		if (subcmd == '-u') {
 			terminal.print('Reading package lists... Done');
@@ -528,12 +491,20 @@ TerminalShell.commands['pkg_add'] = function(terminal, subcmd) {
 				terminal.print("VK    \ (  `\ ");
 				terminal.print("       `.\ ");
 				terminal.print('...."Puffy Power!"...');
+		} else if (subcmd == 'moo') {
+			terminal.print('        (__)');
+			terminal.print('        (oo)');
+			terminal.print('  /------\\/ ');
+			terminal.print(' / |    ||  ');
+			terminal.print('*  /\\---/\\  ');
+			terminal.print('   ~~   ~~  '); 
+			terminal.print('...."Have you mooed today?"...');
 		} else if (subcmd == '-vui') {
 			terminal.print('is this interactive enough for you?');
 		} else if (!subcmd) {
 			terminal.print('This pkg_add has Puffer Fish Powers.');
 		} else {
-			terminal.print('E: Invalid operation '+subcmd);
+			terminal.print('Can\'t find '+subcmd);
 		}
 	}
 };
