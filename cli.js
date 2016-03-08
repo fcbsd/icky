@@ -38,18 +38,21 @@ function trim(value) {
 /* Get Location and Show Position Functions */
 /* from: http://diveintohtml5.info/geolocation.html */
 function get_mylocation() {
+	var where= '';
 	if (geoPosition.init()) {
-		geoPosition.getCurrentPosition(show_position, loc_error,{enableHighAccuracy:true});
+		where = geoPosition.getCurrentPosition(show_position, loc_error,{enableHighAccuracy:true});
 	} else {
-		return 'You are truly lost...';
+		where = 'You are truly lost...';
 	}
+	return where;
 }
 
 function show_position(pos) {
 		var mypos = new Object();
 		mypos['latitude'] = pos.coords.latitude;
 		mypos['longitude'] = pos.coords.longitude;
-		alert("You are at: "+mypos['latitude']+' '+mypos['longitude']);
+		alert("You are at:\n\nLatitude:"+mypos['latitude']+
+				'\nLong:'+mypos['longitude']);
 		// do something
 		return mypos;
 }
@@ -59,6 +62,7 @@ function loc_error(err) {
 }
 
 /* End get location function */
+
 function entityEncode(str) {
 	str = str.replace(/&/g, '&amp;');
 	str = str.replace(/</g, '&lt;');
@@ -83,14 +87,6 @@ function setPrompt(name, host, pwd) {
 
 var TerminalShell = {
 	commands: {
-		help: function help(terminal) {
-			terminal.print($('<h3>help</h3>'));
-			cmd_list = $('<ul>');
-			$.each(this.commands, function(name, func) {
-				cmd_list.append($('<li>').text(name));
-			});
-			terminal.print(cmd_list);
-		}, 
 		clear: function(terminal) {
 			terminal.clear();
 		},
@@ -99,6 +95,13 @@ var TerminalShell = {
 			cmd_list = $('<ul>');
 			$.each(this.commands, function(name, func) {
 				cmd_list.append($('<b>').text(name+' '));
+			});
+			terminal.print(cmd_list);
+		}, 
+		pkg_info: function help(terminal) {
+			cmd_list = $('<ul>');
+			$.each(this.commands, function(name, func) {
+				cmd_list.append($('<li>').text(name));
 			});
 			terminal.print(cmd_list);
 		} 

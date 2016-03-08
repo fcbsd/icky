@@ -1,3 +1,7 @@
+/* icky.js
+ * based on XKCD CLI by Chromakode
+ */
+
 function pathFilename(path) {
 	var match = /\/([^\/]+)$/.exec(path);
 	if (match) {
