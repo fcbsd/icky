@@ -31,7 +31,7 @@ var xkcd = {
 	latest: null,
 	last: null,
 	cache: {},
-	base: 'http://dynamic.xkcd.com/api-0/jsonp/comic/',
+	base: 'https://dynamic.xkcd.com/api-0/jsonp/comic/',
 
 	get:function(num,c,a){
 		if(num==null){
@@ -417,11 +417,11 @@ TerminalShell.commands['cheat'] = function(terminal) {
 TerminalShell.commands['reddit'] = function(terminal, num) {
 	num = Number(num);
 	if (num) {
-		url = 'http://xkcd.com/'+num+'/';
+		url = 'https://xkcd.com/'+num+'/';
 	} else {
 		var url = window.location;
 	}
-	terminal.print($('<iframe src="http://www.reddit.com/static/button/button1.html?width=140&url='+encodeURIComponent(url)+'&newwindow=1" height="22" width="140" scrolling="no" frameborder="0"></iframe>'));
+	terminal.print($('<iframe src="https://www.reddit.com/static/button/button1.html?width=140&url='+encodeURIComponent(url)+'&newwindow=1" height="22" width="140" scrolling="no" frameborder="0"></iframe>'));
 };
 
 TerminalShell.commands['wget'] = 
